@@ -1,6 +1,7 @@
 {% extends 'shop/basic.html' %}
 {% block title %}View your Product {% endblock %}
 {% block body %}
+{% load humanize %}
 <div class="container p-5">
     <div class="row">
         <div class="col-md-4">
@@ -11,7 +12,7 @@
         <div class="col-md-8">
             <div class="my-4">
                 <h3 id="namepr{{product.id}}">{{product.product_name}}</h3>
-                <h5><b>Rs </b>{{product.price}}</h5>
+                <h5><b>Price: <span style='font-size:23px;'>&#8377;</span> </b><span id = "pricepr{{product.id}}">{{product.price|floatformat:2|intcomma}}</span></h5>
                 <p>{{product.desc}}</p>
             </div>
         </div>
@@ -44,7 +45,10 @@ $('.divpr').on('click', 'button.cart', function() {
     } else {
         qty = 1
         name = document.getElementById('name' + idStr).innerHTML;
-        cart[idStr] = [qty, name];
+        price = document.getElementById('price' + idStr).innerHTML;
+        price = parseFloat(price.toString().replace(',','')) ;
+        console.log(price) ;
+        cart[idStr] = [qty, name, price];
     }
     console.log(cart);
     updateCart(cart);
@@ -54,7 +58,8 @@ $('.divpr').on('click', 'button.cart', function() {
 
 
 function updateCart(cart) {
-    var sum = 0
+    var sum = 0;
+    var key = [];
     for (var item in cart) {
         console.log("div"+item);
         if(document.getElementById("div" + item) != null)
@@ -62,7 +67,13 @@ function updateCart(cart) {
             document.getElementById("div" + item).innerHTML = "<button id = 'minus" + item + "' class = 'btn btn-primary minus'>-</button> <span id = 'val" + item + "'>" + cart[item][0] + "</span><button id = 'plus" + item + "' class = 'btn btn-primary plus ml-1'>+</button>";
         }
         sum = sum + cart[item][0] ;
-
+        if(cart[item][0] == 0){
+            key.push(item) ;
+        }
+    }
+    for (var i = 0 ; i < key.length ; i++){
+        console.log(key[i]) ;
+        delete cart[key[i]] ;
     }
     localStorage.setItem('cart', JSON.stringify(cart));
     document.getElementById('Cart').innerHTML = sum ;
@@ -114,7 +125,7 @@ function updatePopover(cart) {
     popStr = popStr + "<div><a href = '/shop/checkout/'><button class = 'btn btn-primary mt-3 mr-2'>checkOut</button></a>"
     popStr = popStr + "<button class = 'btn btn-primary mt-3' id = 'clrCart' onclick = 'clearCart()'>clearCart</button></div>"
     document.getElementById('popCart').setAttribute('data-content', popStr);
-    $('#popCart').popover('show');
+    $('#popCart').popover('hide');
 }
 
 function clearCart(){
