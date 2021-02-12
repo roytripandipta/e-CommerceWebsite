@@ -21,6 +21,7 @@
         <form method="POST" action="/shop/checkout/">{% csrf_token %}
             <div class="form-row">
                 <input type="hidden" name="itemsJson" id="itemsJson">
+                <input type = "hidden" name = "amount" id = "amount">
                 <div class="form-group col-md-6">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" placeholder="Name">
@@ -94,6 +95,7 @@ if ($.isEmptyObject(cart)) {
 }
 document.getElementById('Cart').innerHTML = sum;
 document.getElementById('noItem').innerHTML = sum;
+$('#amount').val(totalPrice.toFixed(2));
 document.getElementById('balance').innerHTML = totalPrice.toLocaleString(undefined,
  {'minimumFractionDigits':2,'maximumFractionDigits':2});
 $('#itemsJson').val(JSON.stringify(cart)) ;
