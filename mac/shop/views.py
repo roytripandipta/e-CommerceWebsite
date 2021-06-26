@@ -13,7 +13,7 @@ from datetime import datetime
 # import the logging library
 import logging
 
-MERCHANT_KEY = 'kbzk1DSbJiV_O3p5'
+MERCHANT_KEY = 'of_fTddShjUt2BDk'
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -108,7 +108,7 @@ def checkout(request):
         id = order.order_id
         #return render(request, 'shop/checkout.html', {'thank': thank, 'id': id})
         param_dict = {
-            'MID': 'WorldP64425807474247',
+            'MID': 'LvjHSC49299025769952',
             'ORDER_ID': str(order.order_id),
             'TXN_AMOUNT': str(amount),
             'CUST_ID': 'email',
